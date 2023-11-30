@@ -1,0 +1,33 @@
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav > div:first-child {
+  margin-right: 2rem;
+}
+
+.nav div a {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+@media (max-width: 549px) {
+  .pagination {
+    flex-direction: column-reverse;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .info {
+    margin-bottom: 1rem;
+  }
+}

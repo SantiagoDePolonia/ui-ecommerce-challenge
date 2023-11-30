@@ -1,0 +1,53 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.logo {
+  flex: 1;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.wrapper_Container {
+  margin: 0 auto;
+}
+
+.CardComponent {
+  background-color: #fff;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 0.5rem;
+  transition: all 250ms ease-in-out;
+  cursor: pointer;
+  padding: 2rem;
+  float: left;
+  max-width: calc(33.33% - 2rem);
+  margin: 1rem;
+}
+
+.CardComponent:nth-child(3n + 1) {
+  clear: both;
+}
+
+.CardComponent:hover {
+  scale: 1.03;
+}
+
+.cardImage {
+  position: relative;
+  width: 20rem;
+  height: 20rem;
+  margin: 0 auto;
+}
+
+.CardComponent img {
+  object-fit: contain;
+}
+
+@media (max-width: 767px) {
+  .productList {
+    grid-template-columns: 1fr;
+  }
+}

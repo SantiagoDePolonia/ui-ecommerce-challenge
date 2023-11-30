@@ -1,0 +1,16 @@
+@import url("normalize.css");
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .container {
+    padding: 0 3rem;
+  }
+}
