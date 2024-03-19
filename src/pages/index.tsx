@@ -2,22 +2,33 @@ import styles from "@/styles/Home.module.css";
 import Image from "next/image";
 import Pagination from "@/components/Pagination/Pagination";
 import { calculateSkip, getPaginationControls } from "@/helpers";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { Product } from "@/types";
+import { debounce } from "lodash";
 
 type HomeProps = {};
 
+type SearchEndpointResponse = {
+  products: Product[], total: number
+};
+
 export default function Page(props: HomeProps) {
   const router = useRouter();
-  const [productdata, setProductdata] = useState<any>([]);
+  const [productdata, setProductdata] = useState<Product[]>([]);
   const [pagination, setPagination] = useState<{
     pageStart: number;
     pageEnd: number;
-  }>(undefined);
-  const [page, setPage] = useState<any>();
+  }>();
+  const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
+  const [query, setQuery] = useState<string>("");
 
-  React.useEffect(() => {
+  const handleOnChangeSearch = useCallback(debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  }, 500), [setQuery]);
+
+  useEffect(() => {
     let path;
     let page: number;
     if (typeof window !== "undefined") {
@@ -29,19 +40,19 @@ export default function Page(props: HomeProps) {
 
     setPage(page);
 
-    const response = fetch(
-      `https://dummyjson.com/products?limit=10&skip=${calculateSkip(10, page)}`,
+    fetch(
+      `https://dummyjson.com/products/search?q=${query}&limit=10&skip=${calculateSkip(10, page)}`,
     )
       .then((res) => {
         return res.json();
       })
-      .then((data) => {
+      .then((data: SearchEndpointResponse) => {
         const paginationControls = getPaginationControls(10, page, data.total);
         setTotal(data.total);
         setPagination(paginationControls);
         setProductdata(data.products);
       });
-  }, [router.asPath]);
+  }, [router.asPath, query]);
 
   return (
     <>
@@ -51,7 +62,7 @@ export default function Page(props: HomeProps) {
             <h1>Shop Products</h1>
           </div>
           <div className={styles.wrapper_Container}>
-            <pre>🎯🎯🎯 Insert Typeahead here</pre>
+            <input type='search' name='search' placeholder="Search here..." onChange={handleOnChangeSearch} />
           </div>
           <div style={{ margin: "5rem 0" }} className={styles.productList}>
             {productdata &&
